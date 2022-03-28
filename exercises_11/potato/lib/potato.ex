@@ -15,9 +15,12 @@ defmodule Potato do
     |> Path.join("*.yaml")
     |> Path.wildcard()
     |> Enum.map(fn yaml_path ->
-      yaml_path
-      |> YamlElixir.read_from_file()
-      |> write_to_json(yaml_path)
+      Task.async(fn ->
+        yaml_path
+        |> YamlElixir.read_from_file()
+        |> write_to_json(yaml_path)
+      end)
     end)
+    |> Task.await_many()
   end
 end
