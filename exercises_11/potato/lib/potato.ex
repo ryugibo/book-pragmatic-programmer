@@ -1,18 +1,23 @@
 defmodule Potato do
-  @moduledoc """
-  Documentation for `Potato`.
-  """
+  def write_to_json({:ok, yaml_data}, yaml_path) do
+    yaml_path
+    |> String.replace_suffix(".yaml", ".json")
+    |> File.write(Poison.encode!(yaml_data))
+  end
 
-  @doc """
-  Hello world.
+  def write_to_json(error, _) do
+    error
+  end
 
-  ## Examples
-
-      iex> Potato.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  def main([path | _]) do
+    path
+    |> Path.absname()
+    |> Path.join("*.yaml")
+    |> Path.wildcard()
+    |> Enum.map(fn yaml_path ->
+      yaml_path
+      |> YamlElixir.read_from_file()
+      |> write_to_json(yaml_path)
+    end)
   end
 end

@@ -7,7 +7,8 @@ defmodule Potato.MixProject do
       version: "0.1.0",
       elixir: "~> 1.13",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      escript: [main_module: Potato]
     ]
   end
 
@@ -23,6 +24,8 @@ defmodule Potato.MixProject do
     [
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
+      {:yaml_elixir, "~> 2.8.0"},
+      {:poison, "~> 5.0"},
     ]
   end
 end
